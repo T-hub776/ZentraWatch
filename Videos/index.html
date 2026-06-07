@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loklok - Black Clover Hub</title>
+    <style>
+        /* Loklok Base Theme Colors */
+        :root {
+            --bg-color: #111319;
+            --card-bg: #1a1d24;
+            --accent-yellow: #fecb00;
+            --text-main: #ffffff;
+            --text-muted: #8e929a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding-bottom: 80px; /* Leave space for mobile navigation bar */
+        }
+
+        /* Top Header Nav with Search Support */
+        header {
+            background-color: rgba(17, 19, 25, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 12px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-bottom: 1px solid #222630;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent-yellow);
+            letter-spacing: 1px;
+        }
+
+        /* Premium Loklok Style Search Input Bar Bar Container */
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-bar {
+            width: 100%;
+            background-color: #1f222b;
+            border: 1px solid #2d323f;
+            color: var(--text-main);
+            padding: 10px 15px 10px 35px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .search-bar:focus {
+            border-color: var(--accent-yellow);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        /* Hero Spotlight Banner */
+        .hero-banner {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(to bottom, rgba(17,19,25,0.2), var(--bg-color)), url('https://unsplash.com') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            box-box-sizing: border-box;
+        }
+
+        .hero-banner h2 { margin: 0 0 5px 0; font-size: 1.8rem; }
+        .hero-banner p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
+
+        /* Loklok Season Selection Tabs */
+        .season-tabs {
+            display: flex;
+            gap: 12px;
+            padding: 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        /* Hide scrollbars for layout tabs */
+        .season-tabs::-webkit-scrollbar, .episode-carousel::-webkit-scrollbar { display: none; }
+
+        .tab {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid transparent;
+            user-select: none;
+        }
+
+        .tab.active {
+            background-color: rgba(254, 203, 0, 0.15);
+            color: var(--accent-yellow);
+            border: 1px solid var(--accent-yellow);
+        }
+
+        /* Active Streaming Video Player Frame */
+        .main-player-section {
+            padding: 0 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .video-box {
+            width: 100%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        video { width: 100%; display: block; }
+
+        .video-details { padding: 15px 0; }
+        .video-details h3 { margin: 0 0 8px 0; font-size: 1.2rem; }
+        
+        .action-row { display: flex; gap: 10px; margin-top: 12px; }
+
+        /* Loklok styling for buttons */
+        .btn {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: inline-block;
+            box-sizing: border-box;
+        }
+        .btn-download { background-color: var(--accent-yellow); color: #000; }
+        .btn-share { background-color: #222630; color: var(--text-main); cursor: pointer; text-align: center;}
+
+        /* Loklok Horizontal Scrolling Episode Slider */
+        .section-title { padding: 20px 20px 5px 20px; margin: 0; font-size: 1.1rem; }
+
+        .episode-carousel {
+            display: flex;
+            gap: 15px;
+            padding: 10px 20px 20px 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+        }
+
+        .episode-card {
+            min-width: 140px;
+            max-width: 140px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .episode-card:active { transform: scale(0.95); }
+
+        .thumb-placeholder {
+            width: 100%;
+            height: 85px;
+            background: linear-gradient(135deg, #2c313c, #1a1d24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: var(--accent-yellow);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .ep-info { padding: 8px; }
+        .ep-info .title { font-size: 0.85rem; font-weight: bold; display: block; margin-bottom: 2px; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .ep-info .desc { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* Mobile Bottom Nav Bar Menu */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: #171920;
+            border-top: 1px solid #222630;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-item.active { color: var(--accent-yellow); }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Menu -->
+    <header>
+        <div class="header-top">
+            <div class="logo">LOKTV</div>
+            <span style="font-size:0.85rem; color:var(--text-muted); background:#222630; padding:4px 8px; border-radius:4px;">No Ads Mod</span>
+        </div>
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchBar" class="search-bar" placeholder="Type episode number (e.g. 1, 93, 170)..." oninput="searchEpisodes()">
+        </div>
+    </header>
+
+    <!-- Main Spotlight Showcase Banner -->
+    <div class="hero-banner">
+        <h2>Black Clover</h2>
+        <p>Action • Fantasy • Shounen • Episodes 1-170 Complete</p>
+    </div>
+
+    <!-- Loklok Interactive Season Tabs Selector -->
+    <div class="season-tabs" id="seasonTabsContainer">
+        <div class="tab active" id="tab-season1" onclick="loadSeason('season1')">Season 1 (1-51)</div>
+        <div class="tab" id="tab-season2" onclick="loadSeason('season2')">Season 2 (52-102)</div>
+        <div class="tab" id="tab-season3" onclick="loadSeason('season3')">Season 3 (103-141)</div>
+        <div class="tab" id="tab-season4" onclick="loadSeason('season4')">Season 4 (142-170)</div>
+    </div>
+
+    <!-- Active Media Streaming Video Container -->
+    <div class="main-player-section">
+        <div class="video-box">
+            <video id="mainPlayer" controls poster="https://unsplash.com">
+                <source id="videoSource" src="https://archive.org" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="video-details">
+            <h3 id="nowPlayingTitle">Black Clover - Episode 01 (Now Playing)</h3>
+            <div class="action-row">
+                <a id="downloadLink" href="https://archive.org" download="Black_Clover_Episode_01.mp4" class="btn btn-download">📥 Download MP4</a>
+                <div onclick="alert('Link Copied to Clipboard!')" class="btn btn-share">🔗 Share</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Horizontal Carousel List Slider Frame -->
+    <h4 class="section-title" id="carouselTitle">Select Episode</h4>
+    <div class="episode-carousel" id="episodeList">
+        <!-- System Javascript engine automatically outputs responsive card codes here -->
+    </div>
+
+    <!-- Bottom Tray Application Menu UI -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active">🏠<br>Home</a>
+        <a href="#" class="nav-item">🔍<br>Search</a>
+  
