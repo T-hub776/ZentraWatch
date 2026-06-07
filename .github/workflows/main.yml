@@ -1,0 +1,51 @@
+# ==========================================
+# LOKTV AUTOMATED SCRIPT DEPLOYER ENGINE (main.yml)
+# ==========================================
+name: Deploy Loklok Static Streaming Site to Pages
+
+on:
+  # Triggers the deployment automatically whenever you commit changes to the main code branch
+  push:
+    branches: ["main"]
+
+  # Allows you to manually click a "Run workflow" button inside the GitHub Actions panel
+  workflow_dispatch:
+
+# Grant necessary system permissions for the token securely
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Prevents multiple deployment collisions by canceling overlapping background tasks safely
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Deployment core sequence setup runtime environment
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Securely pull your files down onto the GitHub virtual build runner container environment
+      - name: Checkout Source Code Repository Files
+        uses: actions/checkout@v4
+        
+      # Step 2: Establish connection frameworks to communicate safely with the core pages host infrastructure
+      - name: Initialize Pages Framework Environments
+        uses: actions/configure-pages@v5
+        
+      # Step 3: Bundle and package all root folder assets (index.html, CNAME, folder systems) into an archive artifact
+      - name: Compress and Package Production Build Directory Elements
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './Videos' # Scans and packages the entire root workspace setup
+          
+      # Step 4: Stream and launch the production package straight live onto the global edge delivery servers
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
